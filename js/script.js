@@ -1,10 +1,11 @@
 const phoneInputField = document.querySelector("#phone");
 const emailInputField = document.querySelector("#email");
+let userId = 0;
 const phoneInput = window.intlTelInput(phoneInputField, {
     utilsScript:
         "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
 });
-let userId = 0;
+
 
 
 
@@ -20,6 +21,7 @@ function process(event, mode) {
         axios.get(`${_apiURL}/v1/sendcodeemail/${email}`).then((res)=>{
             const code = res.data.data[0].code;
             userId = res.data.data[0].userId;
+            localStorage.setItem("userId", userId);
             if(code !== 0 && code !== "new user"){
                 sendEmail(email, code);
             }
@@ -44,17 +46,35 @@ function process(event, mode) {
 
         const code = `${fst.value}${snd.value}${third.value}${forth.value}${fifth.value}${sixth.value}`;
         console.log(code);
-        axios.get(`${_apiURL}/v1/verifyresetcode/${code}/${userId}`).then((res)=>{
+        const id = localStorage.getItem("userId");
+        axios.get(`${_apiURL}/v1/verifyresetcode/${code}/${id}`).then((res)=>{
             const canReset = res.data.data;
+            console.log(id);
+            console.log(res);
             if(canReset){
                 console.log('can reset password')
                 // redirect the reset screen here
-                // window.location.href = "./confirm_otp.html";
+                window.location.href = "./newpass.html";
             }
             else {
                 console.log('not verified')
             }
         });
+    }
+    else if (mode == 'newpass'){
+        const password = document.querySelector("#password").value;
+        const confirm = document.querySelector("#confirmpassword").value;
+        const id = localStorage.getItem("userId");
+console.log('asasasasasas')
+        if (password === confirm){
+            axios.post(`${_apiURL}/v1/resetpassword`, {
+                password: password,
+                userId: id
+            }).then((res)=>{
+                console.log(id);
+                console.log(res);
+            });
+        }
     }
 }
 
