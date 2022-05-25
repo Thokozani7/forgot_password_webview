@@ -11,64 +11,56 @@
     <link rel="stylesheet" href="./css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
-    <script src=
-    "https://smtpjs.com/v3/smtp.js">
-  </script>
-  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
- 
-  <script type="text/javascript">
+    <script src="https://smtpjs.com/v3/smtp.js">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
-  </script>
+    <script type="text/javascript">
+
+    </script>
 </head>
 
 <body>
 
     <div class="containr">
-       
+
         <div class="icon-logo">
 
             <img class="icon" src="https://matriclive.com/images/icon.png" />
         </div>
 
         <div class="top-cont">
-            <div class="heading">
-                Forgot your MatricLive password?
+            <div class="heading" id="head">
+                Enter your new password
+            </div>
+            <div class="heading hidden" id="head-done">
+                Your password was successfully reset
             </div>
 
             <div class="sub-heading">
-                Enter your registered email below to receive your OTP
+                Try not to forget it this time 🙂
             </div>
         </div>
 
 
-       
 
-        <form id="forgot" onsubmit="process(event, 'email')">
+
+        <form id="forgot" onsubmit="process(event, 'newPassword')">
             <div class="col-disp">
 
-                <!-- <p>Enter your Email:</p> -->
-                <!-- <input id="email" type="email" name="email" /> -->
-                <!-- <div class="col-md-6"> -->
-                <!-- <div class="form-group"> -->
-                <input id="email" type="email" class="form-control input-field" placeholder="Email" required />
-                <!-- </div> -->
-                <!-- </div> -->
+                <div class="new-pass">
 
-                <div class="to-phone">
-                    <span>
-                        Or send via <a class="href-word" href="./phone_home.html">
-                            phone number
-                        </a>
-                    </span>
+                    <input id="newPassword" type="password" class="form-control input-field" placeholder="New password"
+                        minlength="5" maxlength="12" required />
                 </div>
-                <!-- <input type="submit" class="btn" value="Send" /> -->
-                <button  type="submit" class="btnLogin">Send</button>
+
+                <div class="show-pass">
+                    <input type="checkbox" onclick="showPassword()"> Show Password
+                </div>
+
+                <button type="submit" class="btnLogin">Update password</button>
             </div>
         </form>
-
-        <div class="incorrect-code hidden" id="email-error">
-            Sorry we could not find a matching email!
-        </div>
     </div>
 
 

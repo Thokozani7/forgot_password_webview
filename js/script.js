@@ -1,6 +1,8 @@
 const phoneInputField = document.querySelector("#phone");
 const emailInputField = document.querySelector("#email");
 let userId = 0;
+const newPasswordInputField = document.querySelector("#newPassword");
+
 const phoneInput = window.intlTelInput(phoneInputField, {
     utilsScript:
         "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
@@ -15,28 +17,29 @@ function process(event, mode) {
     const _apiURL = 'https://api.matriclive.com/';
     event.preventDefault();
     // window.location.href = "./confirm_otp.html";
-    
-    if (mode === 'email'){
+
+    if (mode === 'email') {
         const email = emailInputField.value;
-        axios.get(`${_apiURL}/v1/sendcodeemail/${email}`).then((res)=>{
+        axios.get(`${_apiURL}/v1/sendcodeemail/${email}`).then((res) => {
             const code = res.data.data[0].code;
             userId = res.data.data[0].userId;
             localStorage.setItem("userId", userId);
-            if(code !== 0 && code !== "new user"){
+            if (code !== 0 && code !== "new user" && code != undefined) {
                 sendEmail(email, code);
             }
             else {
-                console.log('user not found')
+                const error = document.querySelector("#email-error");
+                error.classList.remove('hidden');
             }
         });
     }
     else if (mode === 'phone') {
         const phone = phoneInput.value;
-    
+
         info.style.display = "";
         info.innerHTML = `Phone number format: <strong>${phone}</strong>`;
     }
-    else if (mode === 'confirm'){
+    else if (mode === 'confirm') {
         const fst = document.querySelector("#first");
         const snd = document.querySelector("#second");
         const third = document.querySelector("#third");
@@ -45,36 +48,44 @@ function process(event, mode) {
         const sixth = document.querySelector("#sixth");
 
         const code = `${fst.value}${snd.value}${third.value}${forth.value}${fifth.value}${sixth.value}`;
-        console.log(code);
         const id = localStorage.getItem("userId");
-        axios.get(`${_apiURL}/v1/verifyresetcode/${code}/${id}`).then((res)=>{
+        axios.get(`${_apiURL}/v1/verifyresetcode/${code}/${id}`).then((res) => {
             const canReset = res.data.data;
-            console.log(id);
-            console.log(res);
-            if(canReset){
+            if (canReset) {
                 console.log('can reset password')
                 // redirect the reset screen here
-                window.location.href = "./newpass.html";
+                window.location.href = "./reset_pass.html";
             }
             else {
-                console.log('not verified')
+                const error = document.querySelector("#code-error");
+                error.classList.remove('hidden');
             }
         });
     }
-    else if (mode == 'newpass'){
-        const password = document.querySelector("#password").value;
-        const confirm = document.querySelector("#confirmpassword").value;
+    else if (mode === 'newPassword') {
+        const newPass = newPasswordInputField.value;
         const id = localStorage.getItem("userId");
-console.log('asasasasasas')
-        if (password === confirm){
-            axios.post(`${_apiURL}/v1/resetpassword`, {
-                password: password,
-                userId: id
-            }).then((res)=>{
-                console.log(id);
-                console.log(res);
-            });
-        }
+        axios.post(`${_apiURL}/v1/resetpassword`, {
+            password: newPass,
+            userId: id
+        }).then((res) => {
+            const head = document.querySelector("#head");
+            const headDone = document.querySelector("#head-done");
+            const form = document.querySelector("#forgot");
+
+            head.classList.add('hidden');
+            form.classList.add('hidden');
+            headDone.classList.remove('hidden');
+        });
+    }
+}
+
+function showPassword() {
+    var x = document.getElementById("newPassword");
+    if (x.type === "password") {
+        x.type = "text";
+    } else {
+        x.type = "password";
     }
 }
 
@@ -83,7 +94,6 @@ function Validate(otpCode) {
     console.log("You have entered this OTP:")
     console.log(otpCode)
 }
-
 
 
 
@@ -114,7 +124,7 @@ function sendEmail(emailAddress, code) {
         Password: "BA899882A16F0FD876A570E771682975F0CF",
         To: emailAddress,
         From: "tafadzwa.m@matriclive.com",
-        Subject: "Password rest",
+        Subject: "Password reset",
         Body: `Hello, your Matric Live password rest code is <b>${code}</b>, do not share this code with anyone`,
     })
         .then(function (message) {

@@ -73,7 +73,7 @@
 
        
 
-        <form id="forgot" onsubmit="process(event)">
+        <form id="forgot" onsubmit="process(event, 'phone')">
             <div class="col-disp">
 
                 <!-- <p>Enter your Email:</p> -->
@@ -93,7 +93,10 @@
                     </span>
                 </div>
                 <!-- <input type="submit" class="btn" value="Send" /> -->
-                <button type="submit" class="btnLogin">Send</button>
+                <!-- <button type="submit" class="btnLogin">Send</button> -->
+                <div class="no-phone">
+                    Sorry you can not verify using your phone number right now, <br>Please use your email address to verify!
+                </div>
             </div>
         </form>
     </div>

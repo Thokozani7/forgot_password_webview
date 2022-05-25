@@ -39,6 +39,9 @@
             
         <div class="container height-100 d-flex justify-content-center align-items-center">
             <div class="position-relative">
+                <div class="no-phone msg">
+                    Please allow up to 5 minutes before requesting for a new code!
+                </div>
                 <div class="card p-2 text-center">
                     <h6>Please enter the one time pin <br> to verify your account</h6>
                     <div> <span>A code has been sent to your</span> <small>email/phone</small> </div>
@@ -52,8 +55,12 @@
                     <div class="mt-4"> <button class="btn btn-danger px-4 validate">Validate</button> </div>
                 </div>
                 <div class="card-2">
+
                     <div class="content d-flex justify-content-center align-items-center"> <span>Didn't get the code</span>
-                        <a href="./email_home.html" class="text-decoration-none ms-3">. Resend</a>
+                        <a href="./index.html" class="text-decoration-none ms-3">. Resend</a>
+                    </div>
+                    <div class="incorrect-code hidden" id="code-error">
+                        Sorry the code you entered does not match the code we sent!
                     </div>
                 </div>
             </div>
