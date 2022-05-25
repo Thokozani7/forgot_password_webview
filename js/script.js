@@ -1,5 +1,7 @@
 const phoneInputField = document.querySelector("#phone");
 const emailInputField = document.querySelector("#email");
+const newPasswordInputField = document.querySelector("#newPassword");
+
 const phoneInput = window.intlTelInput(phoneInputField, {
     utilsScript:
         "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
@@ -14,13 +16,13 @@ function process(event, mode) {
     const _apiURL = 'https://api.matriclive.com/';
     event.preventDefault();
     // window.location.href = "./confirm_otp.html";
-    
-    if (mode === 'email'){
+
+    if (mode === 'email') {
         const email = emailInputField.value;
-        axios.get(`${_apiURL}/v1/sendcodeemail/${email}`).then((res)=>{
+        axios.get(`${_apiURL}/v1/sendcodeemail/${email}`).then((res) => {
             const code = res.data.data[0].code;
             userId = res.data.data[0].userId;
-            if(code !== 0 && code !== "new user"){
+            if (code !== 0 && code !== "new user") {
                 sendEmail(email, code);
             }
             else {
@@ -30,11 +32,11 @@ function process(event, mode) {
     }
     else if (mode === 'phone') {
         const phone = phoneInput.value;
-    
+
         info.style.display = "";
         info.innerHTML = `Phone number format: <strong>${phone}</strong>`;
     }
-    else if (mode === 'confirm'){
+    else if (mode === 'confirm') {
         const fst = document.querySelector("#first");
         const snd = document.querySelector("#second");
         const third = document.querySelector("#third");
@@ -44,17 +46,34 @@ function process(event, mode) {
 
         const code = `${fst.value}${snd.value}${third.value}${forth.value}${fifth.value}${sixth.value}`;
         console.log(code);
-        axios.get(`${_apiURL}/v1/verifyresetcode/${code}/${userId}`).then((res)=>{
+        axios.get(`${_apiURL}/v1/verifyresetcode/${code}/${userId}`).then((res) => {
             const canReset = res.data.data;
-            if(canReset){
+            if (canReset) {
                 console.log('can reset password')
                 // redirect the reset screen here
-                // window.location.href = "./confirm_otp.html";
+                window.location.href = "./reset_pass.html";
             }
             else {
                 console.log('not verified')
             }
         });
+    }
+    else if (mode === 'newPassword') {
+        const newPass = newPasswordInputField.value;
+
+        console.log("Neww password is: ", newPass);
+
+        // axios.get(`${_apiURL}/v1/verifyresetcode/${code}/${userId}`).then((res) => {
+        //     const canReset = res.data.data;
+        //     if (canReset) {
+        //         console.log('can reset password')
+        //         // redirect the reset screen here
+        //         window.location.href = "./reset_pass.html";
+        //     }
+        //     else {
+        //         console.log('not verified')
+        //     }
+        // });
     }
 }
 
@@ -62,6 +81,16 @@ function process(event, mode) {
 function Validate(otpCode) {
     console.log("You have entered this OTP:")
     console.log(otpCode)
+}
+
+
+function showPassword() {
+    var x = document.getElementById("newPassword");
+    if (x.type === "password") {
+        x.type = "text";
+    } else {
+        x.type = "password";
+    }
 }
 
 
