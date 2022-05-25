@@ -77,13 +77,6 @@ function process(event, mode) {
     }
 }
 
-
-function Validate(otpCode) {
-    console.log("You have entered this OTP:")
-    console.log(otpCode)
-}
-
-
 function showPassword() {
     var x = document.getElementById("newPassword");
     if (x.type === "password") {
@@ -93,6 +86,11 @@ function showPassword() {
     }
 }
 
+
+function Validate(otpCode) {
+    console.log("You have entered this OTP:")
+    console.log(otpCode)
+}
 
 
 
